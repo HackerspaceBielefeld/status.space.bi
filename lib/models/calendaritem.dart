@@ -7,19 +7,12 @@ Color hexToColor(String code) {
 }
 
 // 0 ist kein Wochentag
-const List<String> weekdaynames = [
-  "-",
-  "Mo",
-  "Di",
-  "Mi",
-  "Do",
-  "Fr",
-  "Sa",
-  "So"
-];
+const List<String> weekdaynames = ["-", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 final Map<String, IconData> iconLib = {
   'account-group': MdiIcons.accountGroup,
   'ballot-outline': MdiIcons.ballotOutline,
+  'cake': MdiIcons.cake,
+  'chip': MdiIcons.chip,
   'shield-lock-open-outline': MdiIcons.shieldLockOpenOutline,
   'snake': MdiIcons.snake,
 };
@@ -42,8 +35,7 @@ class CalendarItemVisualMarker {
 
   factory CalendarItemVisualMarker.fromJson(Map<String, dynamic> json) {
     return CalendarItemVisualMarker(
-        itemicon: summaryIcon(json['name']),
-        itemcolor: hexToColor(json['color'] as String));
+        itemicon: summaryIcon(json['name']), itemcolor: hexToColor(json['color'] as String));
   }
 }
 
@@ -56,8 +48,7 @@ class CalendarItem {
   final CalendarItemVisualMarker icon;
   final bool cancelled;
 
-  String get weekday =>
-      weekdaynames[DateTime.fromMillisecondsSinceEpoch(tsstart * 1000).weekday];
+  String get weekday => weekdaynames[DateTime.fromMillisecondsSinceEpoch(tsstart * 1000).weekday];
   int get day => DateTime.fromMillisecondsSinceEpoch(tsstart * 1000).day;
   int get month => DateTime.fromMillisecondsSinceEpoch(tsstart * 1000).month;
   int get hour => DateTime.fromMillisecondsSinceEpoch(tsstart * 1000).hour;
@@ -77,13 +68,15 @@ class CalendarItem {
       print('Parse calendar item');
     }
 
+    const defaultIcon = {'name': 'none', 'color': '0xff000000'};
+
     return CalendarItem(
         summary: json['summary'] as String,
         tsstart: json['tsstart'] as int,
         tsend: json['tsend'] as int,
         categories: json['categories'] as List<dynamic>,
         color: hexToColor(json['color'] as String),
-        icon: CalendarItemVisualMarker.fromJson(json['icon']),
+        icon: CalendarItemVisualMarker.fromJson(json.containsKey('icon') ? json['icon'] ?? defaultIcon : defaultIcon),
         cancelled: json.containsKey('cancelled') ? true : false);
   }
 }
@@ -95,6 +88,8 @@ class CalendarItems {
 
   factory CalendarItems.fromJson(List<dynamic> json) {
     List<CalendarItem> items = [];
+
+    //print(json.toList());
 
     json.forEach((value) {
       items.add(CalendarItem.fromJson(value));

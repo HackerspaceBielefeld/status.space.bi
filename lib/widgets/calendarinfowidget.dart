@@ -9,7 +9,6 @@ class CalendarListTile extends StatelessWidget {
 
   CalendarListTile(this.item);
 
-
   @override
   Widget build(BuildContext context) {
     List<Widget> categories = [];
@@ -75,8 +74,11 @@ class CalendarListTile extends StatelessWidget {
       ),
       title: Row(
         children: [
-          Icon(item.icon.itemicon, color: item.icon.itemcolor,),
-          
+          Icon(
+            item.icon.itemicon,
+            color: item.icon.itemcolor,
+          ),
+          VerticalDivider(),
           Text(
             item.summary,
             style: ts[0],

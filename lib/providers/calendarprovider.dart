@@ -25,13 +25,14 @@ class CalendarProvider extends ChangeNotifier {
     //await Future.delayed(Duration(seconds: 1));
 
     print("update calendar json");
-    http.Response response = await http.get(Uri.parse(baseURI + Random().nextInt(99999).toString()), headers: {"Cache-Control": "no-store"});
+    http.Response response =
+        await http.get(Uri.parse(baseURI + Random().nextInt(99999).toString()), headers: {"Cache-Control": "no-store"});
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
       try {
         items = CalendarItems.fromJson(jsondata['items'] as List<dynamic>);
-      } catch(e){
+      } on int catch (e) {
         print("error parse calendar");
         print(e.toString());
       }
