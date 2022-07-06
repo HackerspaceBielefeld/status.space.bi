@@ -1,17 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:webapp/models/calendaritem.dart';
 
 class CalendarProvider extends ChangeNotifier {
-  CalendarItems items;
+  CalendarItems? items;
   bool loading = true;
 
-  String baseURI;
+  late String baseURI;
 
   CalendarProvider() {
     if (kIsWeb) {
@@ -26,12 +24,17 @@ class CalendarProvider extends ChangeNotifier {
 
     //await Future.delayed(Duration(seconds: 1));
 
-    print("update json");
+    print("update calendar json");
     http.Response response = await http.get(Uri.parse(baseURI + Random().nextInt(99999).toString()), headers: {"Cache-Control": "no-store"});
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
-      items = CalendarItems.fromJson(jsondata['items'] as List<dynamic>);
+      try {
+        items = CalendarItems.fromJson(jsondata['items'] as List<dynamic>);
+      } catch(e){
+        print("error parse calendar");
+        print(e.toString());
+      }
     } else {
       throw Exception('Failed to load status');
     }

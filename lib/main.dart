@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webapp/providers/calendarprovider.dart';
 import 'package:webapp/providers/statusprovider.dart';
-import 'package:webapp/widgets/coronainfowidget.dart';
 import 'package:webapp/widgets/drawer.dart';
 import 'package:webapp/widgets/infowidget.dart';
 import 'package:webapp/widgets/openstatuswidget.dart';
@@ -52,8 +50,8 @@ class SpaceStatusPage extends StatefulWidget {
 }
 
 class _SpaceStatusPageState extends State<SpaceStatusPage> {
-  Timer refreshTimer;
-  int refreshSeconds;
+  late Timer refreshTimer;
+  late int refreshSeconds;
 
   @override
   void initState() {

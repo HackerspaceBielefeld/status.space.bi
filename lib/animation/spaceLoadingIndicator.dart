@@ -2,14 +2,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class SpaceLoadingIndicator extends StatefulWidget {
-  SpaceLoadingIndicator({Key key}) : super(key: key);
+  SpaceLoadingIndicator() : super();
 
   _SpaceLoadingIndicatorState createState() => _SpaceLoadingIndicatorState();
 }
 
 class _SpaceLoadingIndicatorState extends State<SpaceLoadingIndicator> with SingleTickerProviderStateMixin {
-  AnimationController _rotationController;
-  Animation<double> _animation;
+  late AnimationController _rotationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {

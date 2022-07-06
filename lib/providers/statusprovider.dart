@@ -1,19 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:webapp/widgets/coronainfowidget.dart';
 import 'package:webapp/widgets/openstatuswidget.dart';
 
 class RelevantSpaceAPIData {
-  OpenCloseStatus ocs;
-  bool leaving;
-  CoronaMode coronaMode;
-  int maxPersons;
-  int occupiedPersons;
+  late OpenCloseStatus ocs;
+  late bool leaving;
+  late CoronaMode coronaMode;
+  late int maxPersons;
+  late int occupiedPersons;
 
   readFromJson(Map<String, dynamic> data) {
     String tmpocs = data['state']['openstate'];
@@ -27,7 +25,7 @@ class RelevantSpaceAPIData {
 
     leaving = data['state']['leaving'];
 
-    String tmpcoronamode = data['corona']['mode'];
+    String? tmpcoronamode = data['corona']['mode'];
 
     switch (tmpcoronamode) {
       case "GGG":
@@ -52,8 +50,8 @@ class RelevantSpaceAPIData {
         }
     }
 
-    maxPersons = data['corona']['max'];
-    occupiedPersons = data['corona']['current'];
+    maxPersons = data['corona']['max'] ?? 0;
+    occupiedPersons = data['corona']['current'] ?? 0;
   }
 }
 
@@ -61,7 +59,7 @@ class StatusProvider extends ChangeNotifier {
   RelevantSpaceAPIData data = RelevantSpaceAPIData();
   bool loading = true;
 
-  String baseURI;
+  late String baseURI;
 
   StatusProvider() {
     if (kIsWeb) {
@@ -76,13 +74,17 @@ class StatusProvider extends ChangeNotifier {
 
     //await Future.delayed(Duration(seconds: 1));
 
-    print("update json");
+    print("update status json");
     http.Response response = await http.get(Uri.parse(baseURI + Random().nextInt(99999).toString()), headers: {"Cache-Control": "no-store"});
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
-      //print(jsondata);
-      data.readFromJson(jsondata);
+      try{
+        data.readFromJson(jsondata);
+      } catch(e){
+        print("error parse status");
+        print(e.toString());
+      }
     } else {
       throw Exception('Failed to load status');
     }
