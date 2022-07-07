@@ -32,7 +32,7 @@ class CalendarProvider extends ChangeNotifier {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
       try {
         items = CalendarItems.fromJson(jsondata['items'] as List<dynamic>);
-      } on int catch (e) {
+      } catch (e) {
         print("error parse calendar");
         print(e.toString());
       }
