@@ -3,13 +3,11 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:webapp/widgets/coronainfowidget.dart';
 import 'package:webapp/widgets/openstatuswidget.dart';
 
 class RelevantSpaceAPIData {
   late OpenCloseStatus ocs;
   late bool leaving;
-  late CoronaMode coronaMode;
   late int maxPersons;
   late int occupiedPersons;
 
@@ -24,34 +22,6 @@ class RelevantSpaceAPIData {
     }
 
     leaving = data['state']['leaving'];
-
-    String? tmpcoronamode = data['corona']['mode'];
-
-    switch (tmpcoronamode) {
-      case "GGG":
-        {
-          coronaMode = CoronaMode.cmGGG;
-          break;
-        }
-      case "Persons":
-        {
-          coronaMode = CoronaMode.cmPersons;
-          break;
-        }
-      case "Stage0":
-        {
-          coronaMode = CoronaMode.cmStage0;
-          break;
-        }
-      default:
-        {
-          coronaMode = CoronaMode.cmGGG;
-          break;
-        }
-    }
-
-    maxPersons = data['corona']['max'] ?? 0;
-    occupiedPersons = data['corona']['current'] ?? 0;
   }
 }
 
@@ -75,13 +45,15 @@ class StatusProvider extends ChangeNotifier {
     //await Future.delayed(Duration(seconds: 1));
 
     print("update status json");
-    http.Response response = await http.get(Uri.parse(baseURI + Random().nextInt(99999).toString()), headers: {"Cache-Control": "no-store"});
+    http.Response response = await http.get(
+        Uri.parse(baseURI + Random().nextInt(99999).toString()),
+        headers: {"Cache-Control": "no-store"});
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsondata = jsonDecode(response.body);
-      try{
+      try {
         data.readFromJson(jsondata);
-      } catch(e){
+      } catch (e) {
         print("error parse status");
         print(e.toString());
       }
