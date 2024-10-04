@@ -15,9 +15,10 @@ class SpaceStatusDrawer extends StatelessWidget {
               //SelectableText('https://hackerspace-bielefeld.de/space/impressum/'),
               IconButton(
                   onPressed: () async {
-                    const url = "https://hackerspace-bielefeld.de/space/impressum/";
-                    if (await canLaunch(url)) {
-                      await launch(url);
+                    Uri url = Uri.parse(
+                        "https://hackerspace-bielefeld.de/space/impressum/");
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
                     }
                   },
                   icon: Icon(MdiIcons.web))
@@ -30,9 +31,10 @@ class SpaceStatusDrawer extends StatelessWidget {
               //SelectableText('https://hackerspace-bielefeld.de/space/datenschutz/'),
               IconButton(
                   onPressed: () async {
-                    const url = "https://hackerspace-bielefeld.de/space/datenschutz/";
-                    if (await canLaunch(url)) {
-                      await launch(url);
+                    Uri url = Uri.parse(
+                        "https://hackerspace-bielefeld.de/space/datenschutz/");
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
                     }
                   },
                   icon: Icon(MdiIcons.web))
