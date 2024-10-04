@@ -25,9 +25,10 @@ class InfoWidget extends StatelessWidget {
             SelectableText('Blomestraße 27 - 33609 Bielefeld'),
             IconButton(
                 onPressed: () async {
-                  const url = "https://www.openstreetmap.org/#map=18/52.03695/8.56914";
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  Uri url = Uri.parse(
+                      "https://www.openstreetmap.org/#map=18/52.03695/8.56914");
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
                   }
                 },
                 icon: Icon(MdiIcons.mapSearch))
@@ -40,9 +41,9 @@ class InfoWidget extends StatelessWidget {
             SelectableText('+49 (0) 521 337 322 42'),
             IconButton(
                 onPressed: () async {
-                  const url = "tel:+4952133732242";
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  Uri url = Uri.parse("tel:+4952133732242");
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
                   }
                 },
                 icon: Icon(MdiIcons.phoneDial))
